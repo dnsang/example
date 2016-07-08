@@ -39,17 +39,18 @@ class KafkaSimpleConsumer(groupId: String, topic: String) {
 
   }
 
-  def startConsume(num: Int): Unit = {
+  def startConsume(num: Int, log: Boolean = false): Int = {
     try {
       val counter = new AtomicInteger(0);
       while (counter.get() < num) {
         val records: ConsumerRecords[String, String] = kafkaConsumer.poll(100)
+        if (log) {
+          println("Num records:" + records.count())
+        }
         counter.addAndGet(records.count())
         kafkaConsumer.commitSync()
       }
-      println("Consumer group:" + groupId + " on topic:" + topic + " finish consume: " + counter.get() + " items")
-
-
+      counter.get()
     }
 
     finally {

@@ -15,19 +15,19 @@ object MultipleGroupConsumer extends App {
     println(counter.incrementAndGet() + " sending item " + x)
     producer.send(x.toString, x.toString)
   })
-  while(counter.get()<NUM_ITEM) Thread.`yield`()
+  while (counter.get() < NUM_ITEM) Thread.`yield`()
   println("Total Send:" + counter + " items")
 
-  val NUM_GROUP = 2
-  val NUM_THREAD_IN_GROUP = 2
+  val NUM_GROUP = 3
+  val NUM_THREAD_IN_GROUP = 3
 
   (1 to NUM_GROUP).par foreach (x => {
     (1 to NUM_THREAD_IN_GROUP).par foreach (y => {
-      println("group:" + x + " consumer: " + y)
-      val consumer = new KafkaSimpleConsumer("group_" + x, TOPIC)
+      println("start group:" + x + " consumer: " + y)
+      val consumer = new KafkaSimpleConsumer(x.toString, TOPIC)
       val numItemPerThread = NUM_ITEM / NUM_THREAD_IN_GROUP
-      consumer.startConsume(numItemPerThread)
-      println("end group:" + x + " consumer: " + y)
+      val numConsume=consumer.startConsume(numItemPerThread,false)
+      println("end group:" + x + " consumer: " + y + " total items:" + numConsume)
     })
 
   })
