@@ -21,6 +21,7 @@ class KafkaSimpleConsumer(groupId: String, topic: String) {
   kafkaProperties.put("max.poll.records", "1")
   private val kafkaConsumer = new KafkaConsumer[String, String](kafkaProperties)
   kafkaConsumer.subscribe(util.Arrays.asList(topic))
+  kafkaConsumer.unsubscribe()
 
   def startConsume(): Unit = {
     try {

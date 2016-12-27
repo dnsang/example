@@ -108,7 +108,7 @@ class All4OneSupervisorActor extends Actor with ActorLogging {
 object HelloOne4OneSupervisionStrategy extends App {
   val system = ActorSystem("faultTolerance")
   val originalValue: Int = 8
-  val supervisor = system.actorOf(Props[One4OneSupervisorActor], name = "supervisor")
+  val supervisor = system.actorOf(Props[SupervisorActor], name = "supervisor")
 //  println("send value 8")
 //  supervisor ! originalValue
 //  doAsk(supervisor, new Result)
